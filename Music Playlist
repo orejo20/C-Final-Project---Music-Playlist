@@ -1,0 +1,219 @@
+using System;
+using System.Collections.Generic;
+namespace Program{
+	
+	class Program{
+	    
+        static List<string> addedplaylist = new List<string>();
+        static List<string> addedsong = new List<string>();
+		
+		static void Main (string[] args){
+			    
+			Console.WriteLine("\nPLAYLIST");
+			
+			string again = "";
+			do{	
+			    
+			Choices();
+			string input = GetUserInput();
+				
+    			if(input == "C" || input == "c"){
+    			    CreatePlaylist();
+    				input = GetUserInput();
+    			}
+    			else if (input == "V" || input == "v"){
+    			    ViewPlaylist();
+    			    AddRemovePlaylist();
+    				input = GetUserInput();
+    			        if(input == "1"){
+    			            CreatePlaylist();
+    				        input = GetUserInput();
+    			        }
+    			        else if(input == "2"){
+    			            RemovePlaylist();
+    				        input = GetUserInput();
+    			        }
+    			        else if(input == "3"){
+    			            ViewSongPlaylist();
+    			            input = GetUserInput();
+        				}
+    			        else if(input == "4"){
+    			            Back();
+    				        input = GetUserInput();
+    			        }
+    			        else{
+        				    Choices();
+    				        input = GetUserInput();
+    			        }
+    			}
+    			else if (input == "A" || input == "a"){
+    				AddSong();
+    				input = GetUserInput();
+        				if(input == "5"){
+    				        AddSong();
+    				        input = GetUserInput();
+        				}
+        				else if(input == "6"){
+        				    ViewSongPlaylist();
+        				    AddRemoveSong();
+    				        input = GetUserInput();
+        				}
+        				else if(input == "7"){
+        				    RemoveSong();
+    				        input = GetUserInput();
+        				}
+        				else if(input == "8"){
+        				    Back();
+    				        input = GetUserInput();
+        				}
+        				else{
+        				    Choices();
+    				        input = GetUserInput();
+        				}
+    			}
+    			else{
+    				Choices();
+    				input = GetUserInput();
+    			}
+            again = Console.ReadLine();
+			}
+			while (again != "X" && again != "x");
+		}
+		static void Choices(){
+			Console.WriteLine("\n===============================");
+			Console.WriteLine("What do you want to do?");
+			Console.WriteLine("C - Create new playlist");
+			Console.WriteLine("V - View all playlists");
+			Console.WriteLine("A - Add song to a playlist");
+			Console.WriteLine("===============================");
+			Console.WriteLine("Enter your choice: ");
+		}
+		static string GetUserInput(){
+			string input = Console.ReadLine();
+			return input;
+		}
+		static void Back(){
+        	Console.WriteLine("Going back...");
+        	Choices();
+		}
+		static void Continue(){
+			Console.WriteLine("------------------------------------");
+			Console.WriteLine("What do you want to do?");
+        	Console.WriteLine("Press any key to continue");
+			Console.WriteLine("X - Exit application");
+			Console.WriteLine("------------------------------------");
+		}
+		static bool PlaylistExists(string playlistname){
+		    int found = addedplaylist.IndexOf(playlistname);
+			if (found == -1){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		static void CreatePlaylist(){
+    		Console.WriteLine("Create a playlist name: ");
+    		addedplaylist.Add(Console.ReadLine());
+    		Console.WriteLine("\nSuccessfully Added!\n");
+    		Console.WriteLine("Updated list:");
+    	    ViewPlaylist();
+    	    Continue();
+		}
+		
+		static void AddRemovePlaylist(){
+			Console.WriteLine("------------------------------------");
+    		Console.WriteLine("Do you want to add or remove a playlist?");
+    		Console.WriteLine("1 - Add playlist");
+    		Console.WriteLine("2 - Remove playlist");
+    		Console.WriteLine("3 - View songs in a playlist");
+    		Console.WriteLine("4 - Back");
+    		Console.WriteLine("------------------------------------");
+    		Console.WriteLine("Enter your choice: ");
+		}
+		static void ViewPlaylist(){
+    		Console.WriteLine("\nPlaylist/s");
+            foreach (string p in addedplaylist) {
+                Console.WriteLine(p);
+            }
+		}
+		static void ViewSongPlaylist(){
+    		Console.Write("What playlist you want to view? \n");
+			var playlist = Console.ReadLine();
+                if(PlaylistExists(playlist)){
+                	ViewSong();
+                }
+                else{
+                	Console.WriteLine("\nNOT FOUND!\n");
+                }
+		}
+		static void RemovePlaylist(){
+			Console.Write("Type the playlist to remove: ");
+			var playlistRemove = Console.ReadLine();
+    			if (PlaylistExists(playlistRemove)){
+    				addedplaylist.Remove(playlistRemove);
+    				Console.WriteLine("\nSuccessfully Removed!\n");
+        			Console.WriteLine("Updated list:");
+        			ViewPlaylist();
+    			}
+    			else{
+    				Console.WriteLine("\nNOT FOUND!\n");
+    			}
+    		Continue();
+		}
+		static bool SongExists(string songandartist){
+		    int found = addedsong.IndexOf(songandartist);
+			if (found == -1){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		static void AddRemoveSong(){
+			Console.WriteLine("------------------------------------");
+    		Console.WriteLine("Do you want to add, view or remove a song?");
+    		Console.WriteLine("5 - Add song");
+			Console.WriteLine("6 - View songs in a playlist");
+    		Console.WriteLine("7 - Remove song");
+    		Console.WriteLine("8 - Back");
+    		Console.WriteLine("------------------------------------");
+    		Console.WriteLine("Enter your choice: ");
+		}
+		static void AddSong(){
+			Console.Write("What playlist you want to add a song? \n");
+			var playlist = Console.ReadLine();
+				if(PlaylistExists(playlist)){
+					Console.WriteLine("Type the song title and the artist/singer: ");
+                    addedsong.Add(Console.ReadLine());
+                    Console.WriteLine("\nSuccessfully Added!\n");
+                    Console.WriteLine("Updated list:");
+                    ViewSong();
+                    Continue();
+				}
+				else{
+					Console.WriteLine("\nNOT FOUND!\n");
+				}
+		}
+		static void ViewSong(){
+    		Console.WriteLine("\nSong/s");
+            foreach (string s in addedsong) {
+                Console.WriteLine(s);
+            }
+		}
+		static void RemoveSong(){
+			Console.Write("Type the song to remove: ");
+			var songRemove = Console.ReadLine();
+    			if (SongExists(songRemove)){
+    				addedsong.Remove(songRemove);
+    				Console.WriteLine("\nSuccessfully Removed!\n");
+        			Console.WriteLine("Updated list:");
+        			ViewSong();
+    			}
+    			else{
+    				Console.WriteLine("\nNOT FOUND!\n");
+    			}
+    		Continue();
+		}
+	}
+}
